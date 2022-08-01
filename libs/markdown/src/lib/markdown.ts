@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import * as matter from 'gray-matter';
-import { serialize } from 'next-mdx-remote/serialize';
+import { serialize } from 'next-mdx-remote/serialize'
 
 export function getParsedFileContentBySlug(
   filename: string,

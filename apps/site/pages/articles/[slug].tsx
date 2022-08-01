@@ -1,5 +1,5 @@
 import { readdirSync } from 'fs';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import { join } from 'path';
 import { ParsedUrlQuery } from 'querystring';
 import { getParsedFileContentBySlug, renderMarkdown } from '@kadev/markdown';
@@ -19,7 +19,7 @@ const mdxElements = {
 
 const POSTS_PATH = join(process.cwd(), process.env.articleMarkdownPath)
 
-export function Article({ frontMatter, html }) {
+export function Article({ frontMatter, html }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className="m-6">
       <article className="prose prose-lg">
@@ -32,7 +32,7 @@ export function Article({ frontMatter, html }) {
   );
 }
 
-export const getStaticProps: GetStaticProps<ArticleProps> = async ({
+export const getStaticProps = async ({
   params,
 }: {
   params: ArticleProps;

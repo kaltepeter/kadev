@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@kadev/markdown": ["libs/markdown/src/index.ts"],
-      "@kadev/shared/mdx-elements": ["libs/shared/mdx-elements/src/index.ts"]
+      "@kadev/shared/mdx-elements": ["libs/shared/mdx-elements/src/index.ts"],
+      "@kadev/shared/mdx-elements/*": ["libs/shared/mdx-elements/src/lib/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -18,7 +18,7 @@ const Template: ComponentStory<typeof TopicButton> = (args) => {
         {...args}
         onClick={(topicName) => setClickedTopic(topicName)}
       />
-      {clickedTopic && <div>Button has been clicked: {clickedTopic}</div>}
+      {clickedTopic && <div data-testid='click-result'>Button has been clicked: {clickedTopic}</div>}
     </div>
   );
 };

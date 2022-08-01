@@ -1,14 +1,30 @@
+import { readdirSync } from 'fs';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { join } from 'path';
 import { ParsedUrlQuery } from 'querystring';
+import { getParsedFileContentBySlug, renderMarkdown } from '@kadev/markdown';
+import { MDXRemote } from "next-mdx-remote";
+import { Youtube } from "@kadev/shared/mdx-elements";
 
 export interface ArticleProps extends ParsedUrlQuery {
   slug: string;
 }
 
-export function Article(props: ArticleProps) {
+const mdxElements = {
+  Youtube
+}
+
+const POSTS_PATH = join(process.cwd(), '_articles');
+
+export function Article({ frontMatter, html }) {
   return (
-    <div>
-      <h1>Visiting {props.slug}</h1>
+    <div className="m-6">
+      <article className="prose prose-lg">
+        <h1>{frontMatter.title}</h1>
+        <div>by {frontMatter.author.name}</div>
+      </article>
+      <hr />
+      <MDXRemote {...html} components={mdxElements} />
     </div>
   );
 }
@@ -18,16 +34,28 @@ export const getStaticProps: GetStaticProps<ArticleProps> = async ({
 }: {
   params: ArticleProps;
 }) => {
+  const articleMarkdownContent = getParsedFileContentBySlug(
+    params.slug,
+    POSTS_PATH
+  );
+
+  const renderHTML = await renderMarkdown(articleMarkdownContent.content);
+
   return {
     props: {
-      slug: params.slug,
+      frontMatter: articleMarkdownContent.frontMatter,
+      html: renderHTML
     },
   };
 };
 
 export const getStaticPaths: GetStaticPaths<ArticleProps> = async () => {
+  const paths = readdirSync(POSTS_PATH)
+    .map((path) => path.replace(/\.mdx?$/, ''))
+    .map((slug) => ({ params: { slug } }));
+
   return {
-    paths: [{ params: { slug: 'page1' } }, { params: { slug: 'page2' } }],
+    paths,
     fallback: false,
   };
 };

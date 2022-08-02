@@ -3,6 +3,8 @@ import { join } from 'path';
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize'
 
+console.log('test')
+
 export function getParsedFileContentBySlug(
   filename: string,
   postsPath: string
